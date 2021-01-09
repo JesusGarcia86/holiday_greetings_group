@@ -265,7 +265,7 @@ def send_email(request, card_id):
     email_from = settings.EMAIL_HOST_USER 
     recipient_list = [request.POST['email']]
     send_mail( subject, message, email_from, recipient_list ) 
-    return redirect ('/home')
+    return render(request, 'success.html')
 
 # Create comments on view page
 def create_comm(request):

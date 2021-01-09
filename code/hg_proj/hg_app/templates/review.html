@@ -27,13 +27,14 @@
     <div class="greeting">
         <p style="color: black; font-size: 20px; text-align: center;">{{ card.message }}</p>
     </div>
+    {%if visitor%}
     <!-- if song add here -->
     <!-- Likes -->
     <a href="/like/{{card.id}}"><img src="{% static 'like2.svg' %}" style="width: 100px; margin: auto; display: block; margin-top: 30px;"/></a>
     <p style="margin-left: 10px; color: black; text-decoration: underline; width: 100px; display: inline-block;">{{ message.user_likes.count }}
     <!-- Comments would display here -->
     {%for comment in comments%}
-    <div class="message" style="margin: 0px auto 10px; width: 500px; border: paleturquoise 2px dotted; background-color: rgba(175, 238, 238, 0.144);">
+    <div class="message" style="margin: 0px auto 10px; width: 500px; border: paleturquoise 2px dotted; background-color: rgba(175, 238, 238, 0.144); margin-left: 520px;">
         <p>{{comment.content}}</p>
         {%if comment.poster%}
         <p>{{comment.poster}}</p>
@@ -42,15 +43,14 @@
         {%endif%}
     </div>
     {%endfor%} 
-
     <form action="/create_comment" id="comment" method="POST">
         {%csrf_token%}
         <textarea name="contents" cols="60" rows="4" placeholder="Leave a Comment"></textarea><br>
         <input type="hidden" name="card_id" value={{card.id}}>
-        <button type="submit" id="button">Add Comment</button>
+        <button type="submit" id="add_comment" style="margin-left: 150px;">Add Comment</button>
     </form>
+    {%else%}
     <!-- add a form to get email address to invite, pass card iD in URL -->
-    {%if not visitor%}
     
         <form action="/send_email/{{card.id}}" id="send_card" method="POST" >
             {% csrf_token %}
@@ -58,10 +58,14 @@
             Subject: <br><input type="text" name='l_n' style="display: block; margin-bottom: 20px; width: 400px; height: 20px;" placeholder="Your Subject Here">
             Email: <br><input type="text" name='email' style="display: block; width: 400px; height: 20px;" placeholder="Your Email Address Here">
             <input type="hidden" name="link" value="http://localhost:8000/view_card/{{card.unique_id}}/{{card.id}}">
-            <button type="submit" style="margin-left: 50px; margin-top: 30px;">Send Your Card</button>
+            <button type="submit" style="margin-left: 100px; margin-top: 30px;">Send Your Card</button>
         </form> 
-   
-    
+   <!-- Javascript for a success p tag once card was sent
+            <div id="success"></div> 
+        <script>
+            var success = document.getElementById("success");
+            success.innerHTML = "<p>Your card has been sent successfully!</p>";
+        </script> -->
     {%endif%}   
 </body>
 </html>
